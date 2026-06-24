@@ -1,0 +1,26 @@
+services:
+  server:
+    build:
+      context: .
+      dockerfile: Dockerfile.server
+    container_name: fme-test-server
+    volumes:
+      - ./.keys:/keys:ro
+
+  client:
+    build:
+      context: ../..
+      dockerfile: test/docker/Dockerfile.client
+    container_name: fme-test-client
+    depends_on:
+      - server
+    # FUSE inside the container needs /dev/fuse + mount caps. privileged is the
+    # most portable choice for a throwaway test harness; tighten to
+    # `devices: [/dev/fuse]` + `cap_add: [SYS_ADMIN]` if your host allows it.
+    privileged: true
+    volumes:
+      - ./.keys:/keys:ro
+    environment:
+      SERVER: server
+      REMOTE_USER: testuser
+      REMOTE_PATH: /home/testuser/data

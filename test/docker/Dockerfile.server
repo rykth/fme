@@ -1,0 +1,14 @@
+# SSH server with an OpenSSH sftp-server subsystem and seeded test data.
+# Build context: test/docker
+FROM debian:bookworm-slim
+
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends openssh-server \
+    && rm -rf /var/lib/apt/lists/* \
+    && mkdir -p /run/sshd
+
+COPY entrypoint-server.sh /entrypoint-server.sh
+RUN chmod +x /entrypoint-server.sh
+
+EXPOSE 22
+ENTRYPOINT ["/entrypoint-server.sh"]

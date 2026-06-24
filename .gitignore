@@ -1,0 +1,22 @@
+# Build output
+/fme
+*.exe
+*.out
+
+# Test & coverage artifacts
+*.test
+coverage.out
+coverage.html
+
+# Go workspace
+go.work
+go.work.sum
+
+# Editor / OS noise
+.DS_Store
+*.swp
+.idea/
+.vscode/
+
+# Docker test ephemeral keys
+test/docker/.keys/
